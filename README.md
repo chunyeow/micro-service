@@ -1,3 +1,3 @@
 # Micro-Service
 
-This repositories hosted the micro-service written in Python.
+This repository will host micro-services written in Python.

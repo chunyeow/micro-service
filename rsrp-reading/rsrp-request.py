@@ -90,7 +90,8 @@ def read_rsrp_per_day():
           print "Device ID: " + str(conf.Device_ID[i])
           print "Number of Points (288): %d" %len(params)
           print "Average RSRP per day: %.2f" %avg_rsrp      
-    return 'OK'
+          ret = "{dev_id:" + str(conf.Device_ID[i]) + ", num_points:%d" %len(params) + ", avg_dl_rsrp:%.2f" %avg_rsrp + "}"
+    return jsonify(ret)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=False)

@@ -58,19 +58,18 @@ def get_currentmillis(year, month, day, start):
 @app.route('/rsrp', methods=['GET'])
 def read_rsrp_per_day():
     date = request.args.get('date', default = None, type = str)
-    stop = request.args.get('stop', default = None, type = str)
-    interval = request.args.get('interval', default = None, type = str)
-    agg = request.args.get('agg', default = None, type = str)
-    limit = request.args.get('limit', default = None, type = str)
+    if date is None:
+       ret = "{'error':'date in year-month-day not provided'}"
+       status_code = 500
+       return jsonify(ret), status_code
     year,month,day = date.split('-')
     start = str(get_currentmillis(year, month, day, True))
-    #print start
     stop = str(get_currentmillis(year, month, day, False))
-    #print stop
     interval = str(86400000)
     agg = "NONE"
     #limit = str(288)
     limit = str(400)
+    retfull = []
     #rsrp = []
     res = auth_tb(conf.username, conf.password)
     if res != None:
@@ -91,7 +90,14 @@ def read_rsrp_per_day():
           print "Number of Points (288): %d" %len(params)
           print "Average RSRP per day: %.2f" %avg_rsrp      
           ret = "{dev_id:" + str(conf.Device_ID[i]) + ", num_points:%d" %len(params) + ", avg_dl_rsrp:%.2f" %avg_rsrp + "}"
-    return jsonify(ret)
+       else:
+          ret = None
+    if not retfull:
+       status_code = 500
+       retfull = "{'error':'no data for the requested date'}"
+    else:
+       status_code = 200
+    return jsonify(retfull), status_code
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=False)

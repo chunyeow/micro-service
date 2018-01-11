@@ -92,6 +92,8 @@ def read_rsrp_per_day():
           ret = "{dev_id:" + str(conf.Device_ID[i]) + ", num_points:%d" %len(params) + ", avg_dl_rsrp:%.2f" %avg_rsrp + "}"
        else:
           ret = None
+       if ret != None:
+          retfull.append(ret)
     if not retfull:
        status_code = 500
        retfull = "{'error':'no data for the requested date'}"

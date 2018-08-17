@@ -1,0 +1,6 @@
+username = ""
+password = ""
+url = ""
+api_url=""
+token=""
+access_token=""
